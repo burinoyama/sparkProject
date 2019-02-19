@@ -9,7 +9,7 @@ import org.apache.spark.sql.SparkSession
 import org.vin.commerce.bean.UserVisitAction
 import org.vin.commerce.utils.PropertiesUtil
 import org.vin.offline.bean.CategoryCount
-import org.vin.offline.handler.CategoryTopSessionHandler
+import org.vin.offline.handler.{CategoryCountTopSessionHandler, CategoryTopSessionHandler}
 
 object OfflineApp {
 
@@ -32,6 +32,13 @@ object OfflineApp {
     val counts: List[CategoryCount] = CategoryTopSessionHandler.handler(unit, sparkSession, taskId)
 
     println("finish the project first")
+
+    val secondResult: Unit = CategoryCountTopSessionHandler.handler(sparkSession, unit, taskId, counts)
+
+
+    println("finish the project second")
+
+    sparkSession.close()
 
   }
 

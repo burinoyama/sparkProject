@@ -15,7 +15,7 @@ object CategoryTopSessionHandler {
 
     val accumulator: CategoryAccumulator = new CategoryAccumulator()
 
-//    userActionRDD.foreach(ele => println((ele.click_category_id + "|" + ele.order_category_ids + "|" + ele.pay_category_ids)))
+//    userActionRDD.foreach(ele => println((ele.order_product_ids + "|" +ele.click_category_id + "|" + ele.order_category_ids + "|" + ele.pay_category_ids)))
 
     sparkSession.sparkContext.register(accumulator)
 
@@ -41,11 +41,11 @@ object CategoryTopSessionHandler {
     val actionCountByCidMap: Map[String, mutable.HashMap[String, Long]] = map.groupBy({ case (key, count) => key.split("_")(0) })
 
     val list: List[CategoryCount] = actionCountByCidMap.map { case (cid, actionmap) =>
-      CategoryCount("", cid, actionmap.getOrElse(cid + "_click", 0L), actionmap.getOrElse(cid + "_order", 0L), actionmap.getOrElse(cid + "_pay", 0L))
+      CategoryCount(taskId, cid, actionmap.getOrElse(cid + "_click", 0L), actionmap.getOrElse(cid + "_order", 0L), actionmap.getOrElse(cid + "_pay", 0L))
     }.toList
 
     // 5 对结果进行排序，截取
-    list.sortWith { (c1, c2) =>
+    val sortedList = list.sortWith { (c1, c2) =>
       if (c1.clickCount > c2.clickCount) {
         true
       } else if (c1.clickCount == c2.clickCount) {
@@ -59,9 +59,11 @@ object CategoryTopSessionHandler {
       } else false
     }.take(10)
 
-    println(s"sortedCategoryCounterList=${list.mkString("\n")}")
 
-    val result: List[Array[Any]] = list.map(c => Array(c.taskId, c.clickCount, c.orderCount, c.payCount))
+
+//    println(s"sortedCategoryCounterList=${list.mkString("\n")}")
+
+    val result: List[Array[Any]] = sortedList.map(c => Array(c.taskId, c.categoryId, c.clickCount, c.orderCount, c.payCount))
 
     JdbcUtil.executeBatchUpdate("insert into category_top10 values(?,?,?,?,?)", result)
 
