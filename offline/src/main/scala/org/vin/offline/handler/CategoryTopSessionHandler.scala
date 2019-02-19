@@ -19,39 +19,20 @@ object CategoryTopSessionHandler {
 
     sparkSession.sparkContext.register(accumulator)
 
-//    userActionRDD.foreach { ua =>
-//      if (ua.click_category_id != -1L) {
-//        accumulator.add(ua.click_category_id + "_click")
-//      } else if (ua.order_category_ids != null && ua.order_category_ids.size > 0) {
-//        ua.order_category_ids.split(",").foreach(cid =>
-//          accumulator.add(cid + "_order")
-//        )
-//      } else if (ua.pay_category_ids != null && ua.pay_category_ids.size > 0) {
-//        ua.pay_category_ids.split(",").foreach(pid =>
-//          accumulator.add(pid + "_pay")
-//        )
-//      }
-//    }
-    userActionRDD.foreach { userVisitAction =>
-      if (userVisitAction.click_category_id != -1L) {
-        val key: String = userVisitAction.click_category_id + "_click"
-        accumulator.add(key)
-      } else if (userVisitAction.order_category_ids != null && userVisitAction.order_category_ids.length > 0) {
-        val orderCids: Array[String] = userVisitAction.order_category_ids.split(",")
-        for (cid <- orderCids) {
-          val key: String = cid + "_order"
-          accumulator.add(key)
-        }
-
-      } else if (userVisitAction.pay_category_ids != null && userVisitAction.pay_category_ids.length > 0) {
-        val payCids: Array[String] = userVisitAction.pay_category_ids.split(",")
-        for (cid <- payCids) {
-          val key: String = cid + "_pay"
-          accumulator.add(key)
-        }
-
+    userActionRDD.foreach { ua =>
+      if (ua.click_category_id != -1L) {
+        accumulator.add(ua.click_category_id + "_click")
+      } else if (ua.order_category_ids != null && ua.order_category_ids.size > 0) {
+        ua.order_category_ids.split(",").foreach(cid =>
+          accumulator.add(cid + "_order")
+        )
+      } else if (ua.pay_category_ids != null && ua.pay_category_ids.size > 0) {
+        ua.pay_category_ids.split(",").foreach(pid =>
+          accumulator.add(pid + "_pay")
+        )
       }
     }
+
 
     val map: mutable.HashMap[String, Long] = accumulator.value
 

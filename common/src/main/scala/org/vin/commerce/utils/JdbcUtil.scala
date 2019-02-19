@@ -46,7 +46,7 @@ object JdbcUtil {
   }
 
   def executeBatchUpdate(sql: String, params: Iterable[Array[Any]]) {
-    var rtn: Array[Int] = null
+    val rtn: Array[Int] = null
     var pstmt: PreparedStatement = null
 
     val connection = dataSource.getConnection()
@@ -54,13 +54,12 @@ object JdbcUtil {
       for (index <- 0 to params.size) {
         rtn(index) = executeUpdate(sql, params.toList(index))
       }
-
     }
     rtn
   }
 
   def main(args: Array[String]): Unit = {
-    JdbcUtil.executeUpdate("insert into category_top10 values(?,?,?,?,?)", Array("aaa", 1, 1, 1, 1))
+    JdbcUtil.executeUpdate("insert into category_top10 values(?,?,?,?,?)", Array("strenous", 1, 1, 1, 1))
   }
 
 }
