@@ -35,6 +35,7 @@ object CategoryCountTopSessionHandler {
       val session: String = multi(1)
       (cid, (session, count))
     }.groupByKey()
+
     // 组内排序，小组赛
     val unit: RDD[List[(List[String], String, String, Long)]] = sortedByCidRDD.map { case (cid, sessionCount) =>
       val sortedSessionCountRDD: List[(String, Long)] = sessionCount.toList.sortWith((sc1, sc2) =>
@@ -53,7 +54,6 @@ object CategoryCountTopSessionHandler {
       val list: List[Array[Any]] = sortedSessionCountRDD.map { case (k, v) =>
         Array(taskId, cid, k, v)
       }
-      list
       list
     }
     val array: Array[Array[Any]] = value.collect()
