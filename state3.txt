@@ -1,0 +1,13 @@
+DStream 代表了一系列连续的RDD， DStream包含特定时间间隔的数据
+transform {rdd => rdd.map(data => op(data)}
+每个时间间隔执行一次， 相比与在main方法中只执行一次，比如建立数据库连接，会大大减少建立连接的次数。
+RDD内的操作都是在Executor中执行的，RDD外的操作都是在Driver中执行的
+
+updateStateByKey, 根据key的更新状态，对跨时间段的rdd进行累计统计， 生产环境下多用redis进行存储。
+
+window， 滑动窗口（最近一小时，最近一天的数据，不怎么常用）
+
+算子：
+saveAsTextFiles     写入到文件
+saveAsHadoopFiles   写入到hadoop
+foreachRDD          mysql redis es hbase
