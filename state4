@@ -1,0 +1,7 @@
+4，每个地区top3的热门广告
+day_area_city_adskey:count =>
+day_area_adskey:count.groupbykey
+
+
+
+select * from t_order where year(otime) = 2017 and (select count(*) from 0
