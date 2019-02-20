@@ -15,7 +15,7 @@ class CityRatioUDAF extends UserDefinedAggregateFunction{
   override def bufferSchema: StructType = StructType(Array(StructField("city_count", MapType[StringType, LongType])))
 
   //输出类型
-  override def dataType: DataType = ???
+  override def dataType: DataType = ?
 
   //验证，是否相同的输入有相同的输出， 如果是就返回true
   override def deterministic: Boolean = ???
