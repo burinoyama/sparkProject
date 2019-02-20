@@ -52,11 +52,13 @@ class CityRatioUDAF extends UserDefinedAggregateFunction {
 
     val cityCountMap1: Map[String, Long] = buffer1.getAs[HashMap[String, Long]](0)
     val cityCountMap2: Map[String, Long] = buffer2.getAs[HashMap[String, Long]](0)
+    val result: Map[String, Long] = new HashMap[String, Long]
     val totalCount1: Long = buffer1.getLong(1)
     val totalCount2: Long = buffer2.getLong(1)
 
 
-    buffer1(0) = cityCountMap1.foldLeft(cityCountMap2) { case (cityCountMap2, (cityName1, count1)) =>
+    //TODO /: foldleft  第一个参数位置应该是一个空的类型参数，最终将他作为返回值？？？
+    buffer1(0) = cityCountMap1./:(result) { case (cityCountMap2, (cityName1, count1)) =>
       cityCountMap2 + (cityName1 -> (cityCountMap2.getOrElse(cityName1, 0L) + count1))
     }
 
