@@ -1,0 +1,16 @@
+
+.idea/compiler.xml
+.idea/scala_compiler.xml
+.idea/misc.xml
+.idea/hydra.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/sbt.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/vcs.xml
+.idea/vcs.xml
+common/target/classes/hive-site.xml
+.idea/vcs.xml
+*.class
