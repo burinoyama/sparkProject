@@ -4,31 +4,29 @@ import java.util.Properties
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import org.vin.commerce.bean.CityInfo
-import org.vin.commerce.utils.{PropertiesUtil, RanOpt}
+import org.vin.commerce.utils.PropertiesUtil
+import org.vin.mock.util.RandomOptions.RanOpt
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
 object MockRealTime {
 
-
   /**
     * 模拟的数据
-
+    *
     * 格式 ：timestamp area city userid adid
     * 某个时间点 某个地区 某个城市 某个用户 某个广告
     */
   def generateMockData(): Array[String] = {
     val array = ArrayBuffer[String]()
-
-
     val CityRandomOpt = RandomOptions(
-      RanOpt(CityInfo(1,"北京","华北"),30),
-      RanOpt(CityInfo(1,"上海","华东"),30),
-      RanOpt(CityInfo(1,"广州","华南"),10),
-      RanOpt(CityInfo(1,"深圳","华南"),20),
-      RanOpt(CityInfo(1,"天津","华北"),10)
-      )
+      RanOpt(CityInfo(1, "北京", "华北"), 30),
+      RanOpt(CityInfo(1, "上海", "华东"), 30),
+      RanOpt(CityInfo(1, "广州", "华南"), 10),
+      RanOpt(CityInfo(1, "深圳", "华南"), 20),
+      RanOpt(CityInfo(1, "天津", "华北"), 10)
+    )
 
     val random = new Random()
     // 模拟实时数据：
@@ -39,8 +37,8 @@ object MockRealTime {
       val cityInfo = CityRandomOpt.getRandomOpt()
       val city = cityInfo.city_name
       val area = cityInfo.area
-      val adid = 1+random.nextInt(6)
-      val userid = 1+random.nextInt(6)
+      val adid = 1 + random.nextInt(6)
+      val userid = 1 + random.nextInt(6)
 
       // 拼接实时数据
       array += timestamp + " " + area + " " + city + " " + userid + " " + adid
@@ -68,7 +66,7 @@ object MockRealTime {
 
     val prop = PropertiesUtil.load("config.properties")
     val broker = prop.getProperty("kafka.broker.list")
-    val topic =  "ads_log"
+    val topic = "ads_log"
 
     // 创建Kafka消费者
     val kafkaProducer = createKafkaProducer(broker)

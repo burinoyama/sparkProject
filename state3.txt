@@ -11,3 +11,9 @@ window， 滑动窗口（最近一小时，最近一天的数据，不怎么常�
 saveAsTextFiles     写入到文件
 saveAsHadoopFiles   写入到hadoop
 foreachRDD          mysql redis es hbase
+
+
+question:
+enable.auto.commit的的值 true&value的实际含义
+
+kafaka常用命令 bin/kafka-console-consumer.sh --zookeeper hadoop5:2181 --from-beginning --topic ads_log
